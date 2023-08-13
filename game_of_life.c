@@ -20,9 +20,9 @@
 #define ABOVE (LEN - WIDTH)
 #define BELOW (LEN + WIDTH)
 
-char screen[WIDTH * HEIGHT];
+static char screen[WIDTH * HEIGHT];
 
-int clamp(int i) {
+static int clamp(int i) {
   // Prob needs better name. :P
   // Cycle or loop? from 0 to LEN ignore negative
   if (i < 0) {
@@ -33,14 +33,14 @@ int clamp(int i) {
   return i % (LEN);
 }
 
-void init(void) {
+static void init(void) {
   char *ptr = screen;
   size_t n = LEN;
   while (n-- > 0)
     *ptr++ = (rand() % 6 > 3) ? '@' : ' ';
 }
 
-void update(void) {
+static void update(void) {
   char copy[LEN];
   strcpy(copy, screen);
   for (int p = 0; p < LEN; p++) {
@@ -76,14 +76,14 @@ void update(void) {
   }
 }
 
-void show(void) {
+static void show(void) {
   for (int y = 0; y < HEIGHT; ++y) {
     fwrite(&screen[y * WIDTH], WIDTH, 1, stdout);
     fputc('\n', stdout);
   }
 }
 
-void back(void) { // Move cursor to the top left angle of the frame
+static void back(void) { // Move cursor to the top left angle of the frame
   printf("\x1b[%dD", WIDTH);
   printf("\x1b[%dA", HEIGHT);
 }
